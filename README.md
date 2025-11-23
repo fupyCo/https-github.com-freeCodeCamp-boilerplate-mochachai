@@ -8,7 +8,26 @@ As we develop and add new design assets, this README will be updated to reflect 
 
 ## File Architecture
 
-*File structure will be documented here as templates and assets are added.*
+```
+mktg-design/
+├── concepts/
+│   └── webpages/
+│       ├── newspaper_template.md       # Template design specification and documentation
+│       └── newspaper_template.html     # Interactive HTML template with embedded CSS/JS
+└── README.md
+```
+
+### Directory Descriptions
+
+#### `/concepts/`
+Contains conceptual design templates and mockups for various marketing materials.
+
+#### `/concepts/webpages/`
+Web-based design templates that can be viewed in browsers and printed.
+
+**newspaper_template.md** - Comprehensive documentation describing the newspaper-style whitepages template, including design specifications, layout structure, content sections, and technical features.
+
+**newspaper_template.html** - A fully functional, modernized replica of traditional newspaper whitepages. Features a responsive four-column layout optimized for displaying local contractor information (plumbers, landscapers, etc.) with integrated advertisement spaces. Includes clickable contact information and print/download functionality. The template is responsive for web viewing but scales to standard 8.5" x 11" letter size when printed.
 
 ---
 
