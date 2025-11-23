@@ -13,24 +13,25 @@
 
         body {
             font-family: 'Georgia', 'Times New Roman', serif;
-            background-color: #f5f5f0;
-            color: #222;
-            line-height: 1.4;
+            background-color: #e8e4d8;
+            color: #1a1a1a;
+            line-height: 1.3;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background-color: #fafaf5;
+            background-color: #f4f1e8;
             padding: 20px;
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
 
         /* Header Styles */
         .header {
-            border-bottom: 4px solid #222;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
+            border-bottom: 5px double #000;
+            border-top: 3px solid #000;
+            padding: 15px 0;
+            margin-bottom: 15px;
             position: relative;
         }
 
@@ -60,12 +61,21 @@
         }
 
         .masthead h1 {
-            font-family: 'Georgia', serif;
-            font-size: 42px;
-            font-weight: bold;
-            letter-spacing: 2px;
+            font-family: 'Arial Black', 'Arial', sans-serif;
+            font-size: 48px;
+            font-weight: 900;
+            letter-spacing: 3px;
             text-transform: uppercase;
             margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .masthead h1::before {
+            content: '»»';
+            font-size: 42px;
+            color: #000;
         }
 
         .masthead .subtitle {
@@ -77,10 +87,12 @@
         .publication-info {
             display: flex;
             justify-content: space-between;
-            font-size: 12px;
-            padding-top: 10px;
-            border-top: 1px solid #ccc;
+            font-size: 11px;
+            padding-top: 8px;
+            border-top: 2px solid #000;
             margin-top: 10px;
+            text-transform: uppercase;
+            font-weight: bold;
         }
 
         .print-button {
@@ -102,15 +114,15 @@
         .four-column-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
-            border-top: 2px solid #222;
-            padding-top: 15px;
+            gap: 12px;
+            margin-bottom: 15px;
+            border-top: 3px solid #000;
+            padding-top: 12px;
         }
 
         .column {
-            border-right: 1px solid #ccc;
-            padding-right: 15px;
+            border-right: 2px solid #000;
+            padding-right: 12px;
         }
 
         .column:last-child {
@@ -118,19 +130,21 @@
         }
 
         .section-title {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             text-transform: uppercase;
-            border-bottom: 2px solid #222;
-            padding-bottom: 5px;
-            margin-bottom: 10px;
+            background-color: #000;
+            color: #fff;
+            padding: 5px 8px;
+            margin-bottom: 12px;
             letter-spacing: 1px;
+            font-family: 'Arial', sans-serif;
         }
 
         .listing {
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px dashed #ddd;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ccc;
         }
 
         .listing:last-child {
@@ -139,44 +153,46 @@
 
         .business-name {
             font-weight: bold;
-            font-size: 14px;
-            margin-bottom: 3px;
+            font-size: 13px;
+            margin-bottom: 2px;
+            text-transform: uppercase;
         }
 
         .contact-info {
-            font-size: 12px;
-            margin: 3px 0;
+            font-size: 11px;
+            margin: 1px 0;
+            line-height: 1.4;
         }
 
         .contact-info a {
-            color: #222;
+            color: #000;
             text-decoration: none;
-            border-bottom: 1px solid #999;
         }
 
         .contact-info a:hover {
-            border-bottom: 2px solid #222;
+            text-decoration: underline;
         }
 
         .service-area {
-            font-size: 11px;
+            font-size: 10px;
             font-style: italic;
-            color: #555;
-            margin: 3px 0;
+            color: #444;
+            margin: 2px 0;
         }
 
         .description {
-            font-size: 11px;
-            margin-top: 5px;
-            line-height: 1.3;
+            font-size: 10px;
+            margin-top: 3px;
+            line-height: 1.4;
+            color: #222;
         }
 
         /* Advertisement Styles */
         .ad-section {
-            border: 2px solid #222;
-            padding: 15px;
-            margin-bottom: 20px;
-            background-color: #fff;
+            border: 3px double #000;
+            padding: 12px;
+            margin-bottom: 15px;
+            background-color: #fefdfb;
             text-align: center;
         }
 
@@ -306,8 +322,8 @@
                     LOGO
                 </div>
                 <div class="masthead">
-                    <h1>Local Services</h1>
-                    <div class="subtitle">Your Trusted Community Directory</div>
+                    <h1>CLASSIFIEDS</h1>
+                    <div class="subtitle">Local Services Directory • Professional Contractors</div>
                 </div>
             </div>
             <div class="publication-info">
@@ -317,7 +333,7 @@
             </div>
         </div>
 
-        <button class="print-button" onclick="window.print()">📄 Print / Download Directory</button>
+        <button class="print-button" onclick="window.print()">Print / Download Directory</button>
 
         <!-- Version 1: Full-Width Ad at Top -->
         <div class="four-column-grid">
@@ -339,24 +355,24 @@
 
                 <div class="listing">
                     <div class="business-name">Smith & Sons Plumbing</div>
-                    <div class="contact-info">📞 <a href="tel:555-0101">(555) 010-1234</a></div>
-                    <div class="contact-info">✉️ <a href="mailto:info@smithplumbing.com">info@smithplumbing.com</a></div>
+                    <div class="contact-info"><a href="tel:555-0101">(555) 010-1234</a></div>
+                    <div class="contact-info"><a href="mailto:info@smithplumbing.com">info@smithplumbing.com</a></div>
                     <div class="service-area">Serving: Downtown, Westside</div>
                     <div class="description">24/7 emergency service. Licensed & insured. 30+ years experience.</div>
                 </div>
 
                 <div class="listing">
                     <div class="business-name">Quick Fix Plumbing</div>
-                    <div class="contact-info">📞 <a href="tel:555-0102">(555) 010-2345</a></div>
-                    <div class="contact-info">✉️ <a href="mailto:service@quickfix.com">service@quickfix.com</a></div>
+                    <div class="contact-info"><a href="tel:555-0102">(555) 010-2345</a></div>
+                    <div class="contact-info"><a href="mailto:service@quickfix.com">service@quickfix.com</a></div>
                     <div class="service-area">Serving: All Districts</div>
                     <div class="description">Same-day service available. Residential & commercial.</div>
                 </div>
 
                 <div class="listing">
                     <div class="business-name">Reliable Plumbing Co.</div>
-                    <div class="contact-info">📞 <a href="tel:555-0103">(555) 010-3456</a></div>
-                    <div class="contact-info">✉️ <a href="mailto:help@reliableplumb.com">help@reliableplumb.com</a></div>
+                    <div class="contact-info"><a href="tel:555-0103">(555) 010-3456</a></div>
+                    <div class="contact-info"><a href="mailto:help@reliableplumb.com">help@reliableplumb.com</a></div>
                     <div class="service-area">Serving: Eastside, Suburbs</div>
                     <div class="description">Specializing in repairs, installations, and maintenance.</div>
                 </div>
@@ -368,8 +384,8 @@
 
                 <div class="listing">
                     <div class="business-name">Blue Water Plumbing</div>
-                    <div class="contact-info">📞 <a href="tel:555-0104">(555) 010-4567</a></div>
-                    <div class="contact-info">✉️ <a href="mailto:contact@bluewater.com">contact@bluewater.com</a></div>
+                    <div class="contact-info"><a href="tel:555-0104">(555) 010-4567</a></div>
+                    <div class="contact-info"><a href="mailto:contact@bluewater.com">contact@bluewater.com</a></div>
                     <div class="service-area">Serving: Northside</div>
                     <div class="description">Eco-friendly solutions. Water heater specialists.</div>
                 </div>
@@ -391,24 +407,24 @@
 
                 <div class="listing">
                     <div class="business-name">Green Thumb Landscaping</div>
-                    <div class="contact-info">📞 <a href="tel:555-0201">(555) 020-1234</a></div>
-                    <div class="contact-info">✉️ <a href="mailto:info@greenthumb.com">info@greenthumb.com</a></div>
+                    <div class="contact-info"><a href="tel:555-0201">(555) 020-1234</a></div>
+                    <div class="contact-info"><a href="mailto:info@greenthumb.com">info@greenthumb.com</a></div>
                     <div class="service-area">Serving: All Areas</div>
                     <div class="description">Full-service landscaping. Design, installation, maintenance.</div>
                 </div>
 
                 <div class="listing">
                     <div class="business-name">Lawn Masters Pro</div>
-                    <div class="contact-info">📞 <a href="tel:555-0202">(555) 020-2345</a></div>
-                    <div class="contact-info">✉️ <a href="mailto:service@lawnmasters.com">service@lawnmasters.com</a></div>
+                    <div class="contact-info"><a href="tel:555-0202">(555) 020-2345</a></div>
+                    <div class="contact-info"><a href="mailto:service@lawnmasters.com">service@lawnmasters.com</a></div>
                     <div class="service-area">Serving: Residential Areas</div>
                     <div class="description">Weekly mowing, seasonal cleanup, mulching services.</div>
                 </div>
 
                 <div class="listing">
                     <div class="business-name">Paradise Gardens</div>
-                    <div class="contact-info">📞 <a href="tel:555-0203">(555) 020-3456</a></div>
-                    <div class="contact-info">✉️ <a href="mailto:contact@paradisegardens.com">contact@paradisegardens.com</a></div>
+                    <div class="contact-info"><a href="tel:555-0203">(555) 020-3456</a></div>
+                    <div class="contact-info"><a href="mailto:contact@paradisegardens.com">contact@paradisegardens.com</a></div>
                     <div class="service-area">Serving: Downtown, Westside</div>
                     <div class="description">Custom garden design and hardscaping specialists.</div>
                 </div>
@@ -420,8 +436,8 @@
 
                 <div class="listing">
                     <div class="business-name">EcoScape Solutions</div>
-                    <div class="contact-info">📞 <a href="tel:555-0204">(555) 020-4567</a></div>
-                    <div class="contact-info">✉️ <a href="mailto:info@ecoscape.com">info@ecoscape.com</a></div>
+                    <div class="contact-info"><a href="tel:555-0204">(555) 020-4567</a></div>
+                    <div class="contact-info"><a href="mailto:info@ecoscape.com">info@ecoscape.com</a></div>
                     <div class="service-area">Serving: All Districts</div>
                     <div class="description">Sustainable landscaping. Native plants. Water conservation.</div>
                 </div>
