@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iOS Widgets - Government Grant Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            color: #fff;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .widget-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .widget-container {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .widget-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Lock Screen Widget */
+        .lockscreen-widget {
+            background: linear-gradient(135deg, #26374a 0%, #1a2633 100%);
+            border-radius: 16px;
+            padding: 12px;
+            color: #fff;
+            font-size: 12px;
+            max-width: 160px;
+            margin: 0 auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .lockscreen-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .lockscreen-logo {
+            width: 24px;
+            height: 24px;
+            background: #af3c43;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .lockscreen-title {
+            font-size: 11px;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .lockscreen-content {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+
+        .lockscreen-detail {
+            font-size: 10px;
+            opacity: 0.7;
+            line-height: 1.4;
+        }
+
+        /* Home Screen Widget */
+        .homescreen-widget {
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+            border-radius: 20px;
+            padding: 16px;
+            max-width: 340px;
+            margin: 0 auto;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            color: #000;
+        }
+
+        .homescreen-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .homescreen-logo {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #af3c43 0%, #8b2f35 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .homescreen-title {
+            flex: 1;
+        }
+
+        .homescreen-app-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 2px;
+        }
+
+        .homescreen-widget-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .homescreen-content {
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .status-row:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .status-label {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .status-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-badge.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-badge.approved {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-badge.review {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .homescreen-footer {
+            font-size: 11px;
+            color: #999;
+            text-align: center;
+        }
+
+        /* Notification Pop-up */
+        .notification-popup {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-radius: 14px;
+            padding: 14px;
+            max-width: 380px;
+            margin: 0 auto;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .notification-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .notification-logo {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #af3c43 0%, #8b2f35 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .notification-app-info {
+            flex: 1;
+        }
+
+        .notification-app-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .notification-time {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .notification-content {
+            margin-left: 42px;
+            margin-bottom: 12px;
+        }
+
+        .notification-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 4px;
+        }
+
+        .notification-message {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .notification-actions {
+            display: flex;
+            gap: 8px;
+            margin-left: 42px;
+        }
+
+        .notification-button {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .notification-button.primary {
+            background: #26374a;
+            color: #fff;
+        }
+
+        .notification-button.primary:hover {
+            background: #1a2633;
+            transform: scale(1.02);
+        }
+
+        .notification-button.secondary {
+            background: #f0f0f0;
+            color: #000;
+        }
+
+        .notification-button.secondary:hover {
+            background: #e0e0e0;
+            transform: scale(1.02);
+        }
+
+        /* Live Activity */
+        .live-activity {
+            background: linear-gradient(135deg, #1c1c1e 0%, #2c2c2e 100%);
+            border-radius: 44px;
+            padding: 12px 20px;
+            max-width: 380px;
+            margin: 0 auto;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+        }
+
+        .live-activity-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .live-activity-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #af3c43 0%, #8b2f35 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .live-activity-info {
+            flex: 1;
+        }
+
+        .live-activity-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            opacity: 0.9;
+        }
+
+        .live-activity-status {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .live-activity-progress {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 4px;
+        }
+
+        .live-activity-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #af3c43 0%, #d84a52 100%);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .live-activity-detail {
+            font-size: 11px;
+            opacity: 0.7;
+        }
+
+        .live-activity-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .live-activity-button {
+            flex: 1;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .live-activity-button:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.02);
+        }
+
+        /* Demo Controls */
+        .demo-controls {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .demo-button {
+            background: #26374a;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 0 5px;
+            transition: all 0.2s;
+        }
+
+        .demo-button:hover {
+            background: #1a2633;
+            transform: translateY(-2px);
+        }
+
+        /* Phone Mockup */
+        .phone-mockup {
+            background: #000;
+            border-radius: 40px;
+            padding: 12px;
+            max-width: 380px;
+            margin: 0 auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .phone-notch {
+            width: 120px;
+            height: 28px;
+            background: #000;
+            border-radius: 0 0 20px 20px;
+            margin: 0 auto;
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .phone-screen {
+            background: linear-gradient(135deg, #4A5568 0%, #2D3748 100%);
+            border-radius: 32px;
+            padding: 40px 20px 20px;
+            min-height: 600px;
+            position: relative;
+        }
+
+        .phone-time {
+            color: #fff;
+            font-size: 72px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .phone-date {
+            color: rgba(255,255,255,0.9);
+            font-size: 18px;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .phone-notification {
+            margin-bottom: 20px;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .widget-showcase {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-title">Government Grant Portal - iOS Widgets</h1>
+
+        <!-- Lock Screen Widget -->
+        <div class="widget-showcase">
+            <div class="widget-container">
+                <div class="widget-label">Lock Screen Widget</div>
+                <div class="lockscreen-widget">
+                    <div class="lockscreen-header">
+                        <div class="lockscreen-logo">GOV</div>
+                        <div class="lockscreen-title">Grant Portal</div>
+                    </div>
+                    <div class="lockscreen-content">Application Update</div>
+                    <div class="lockscreen-detail">Your grant application #45821 has been approved for review</div>
+                </div>
+                <div class="demo-controls">
+                    <button class="demo-button" onclick="alert('Lock screen widget tapped!')">Tap to Open</button>
+                </div>
+            </div>
+
+            <!-- Home Screen Widget -->
+            <div class="widget-container">
+                <div class="widget-label">Home Screen Widget (Medium)</div>
+                <div class="homescreen-widget">
+                    <div class="homescreen-header">
+                        <div class="homescreen-logo">GOV</div>
+                        <div class="homescreen-title">
+                            <div class="homescreen-app-name">Grant Portal</div>
+                            <div class="homescreen-widget-title">My Applications</div>
+                        </div>
+                    </div>
+                    <div class="homescreen-content">
+                        <div class="status-row">
+                            <span class="status-label">Application #45821</span>
+                            <span class="status-badge review">In Review</span>
+                        </div>
+                        <div class="status-row">
+                            <span class="status-label">Application #45720</span>
+                            <span class="status-badge approved">Approved</span>
+                        </div>
+                        <div class="status-row">
+                            <span class="status-label">Application #45619</span>
+                            <span class="status-badge pending">Pending</span>
+                        </div>
+                    </div>
+                    <div class="homescreen-footer">Last updated: 2 hours ago</div>
+                </div>
+                <div class="demo-controls">
+                    <button class="demo-button" onclick="alert('Opening Grant Portal...')">Open App</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification Pop-up -->
+        <div class="widget-showcase">
+            <div class="widget-container">
+                <div class="widget-label">Notification Banner</div>
+                <div class="notification-popup">
+                    <div class="notification-header">
+                        <div class="notification-logo">GOV</div>
+                        <div class="notification-app-info">
+                            <div class="notification-app-name">Grant Portal</div>
+                            <div class="notification-time">now</div>
+                        </div>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">Application Status Update</div>
+                        <div class="notification-message">Your application #45821 has been approved and moved to the review stage. Next steps are available.</div>
+                    </div>
+                    <div class="notification-actions">
+                        <button class="notification-button secondary" onclick="dismissNotification(this)">Dismiss</button>
+                        <button class="notification-button primary" onclick="viewNotification()">View</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Activity -->
+            <div class="widget-container">
+                <div class="widget-label">Live Activity (Dynamic Island)</div>
+                <div class="live-activity">
+                    <div class="live-activity-content">
+                        <div class="live-activity-logo">GOV</div>
+                        <div class="live-activity-info">
+                            <div class="live-activity-title">Grant Portal</div>
+                            <div class="live-activity-status">Processing Application</div>
+                            <div class="live-activity-progress">
+                                <div class="live-activity-progress-bar" style="width: 65%;"></div>
+                            </div>
+                            <div class="live-activity-detail">Step 3 of 4 • Estimated 5 min remaining</div>
+                        </div>
+                    </div>
+                    <div class="live-activity-actions">
+                        <button class="live-activity-button" onclick="alert('Canceling...')">Cancel</button>
+                        <button class="live-activity-button" onclick="alert('Viewing details...')">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Full Phone Mockup -->
+        <div class="widget-showcase">
+            <div class="widget-container" style="grid-column: 1 / -1;">
+                <div class="widget-label">iPhone Lock Screen Preview</div>
+                <div class="phone-mockup">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <div class="phone-time">9:41</div>
+                        <div class="phone-date">Monday, November 23</div>
+
+                        <div class="phone-notification">
+                            <div class="notification-popup">
+                                <div class="notification-header">
+                                    <div class="notification-logo">GOV</div>
+                                    <div class="notification-app-info">
+                                        <div class="notification-app-name">Grant Portal</div>
+                                        <div class="notification-time">now</div>
+                                    </div>
+                                </div>
+                                <div class="notification-content">
+                                    <div class="notification-title">New Grant Available</div>
+                                    <div class="notification-message">Small Business Recovery Grant is now accepting applications. Deadline: Dec 15.</div>
+                                </div>
+                                <div class="notification-actions">
+                                    <button class="notification-button secondary">Dismiss</button>
+                                    <button class="notification-button primary">Apply Now</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 30px; display: flex; gap: 10px; justify-content: center;">
+                            <div class="lockscreen-widget">
+                                <div class="lockscreen-header">
+                                    <div class="lockscreen-logo">GOV</div>
+                                    <div class="lockscreen-title">My Apps</div>
+                                </div>
+                                <div class="lockscreen-content">3 Active</div>
+                                <div class="lockscreen-detail">2 pending review</div>
+                            </div>
+                            <div class="lockscreen-widget">
+                                <div class="lockscreen-header">
+                                    <div class="lockscreen-logo">GOV</div>
+                                    <div class="lockscreen-title">Deadline</div>
+                                </div>
+                                <div class="lockscreen-content">22 Days</div>
+                                <div class="lockscreen-detail">Until Dec 15</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function dismissNotification(button) {
+            const notification = button.closest('.notification-popup');
+            notification.style.animation = 'slideUp 0.3s ease';
+            setTimeout(() => {
+                notification.style.opacity = '0.3';
+                alert('Notification dismissed');
+            }, 300);
+        }
+
+        function viewNotification() {
+            alert('Opening application #45821...\n\nIn a real app, this would open the full application details.');
+        }
+
+        // Simulate progress bar animation
+        setInterval(() => {
+            const progressBars = document.querySelectorAll('.live-activity-progress-bar');
+            progressBars.forEach(bar => {
+                let width = parseInt(bar.style.width);
+                if (width < 100) {
+                    bar.style.width = (width + 5) + '%';
+                } else {
+                    bar.style.width = '0%';
+                }
+            });
+        }, 2000);
+    </script>
+</body>
+</html>
