@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newspaper Classifieds - Dynamic Text Box Template</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background: linear-gradient(135deg, #f5e6d3 0%, #e8d5b7 100%);
+            padding: 20px;
+            color: #1a1a1a;
+            position: relative;
+        }
+
+        /* Aged paper texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.03) 2px, rgba(0,0,0,.03) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,.03) 2px, rgba(0,0,0,.03) 4px);
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .newspaper-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #faf7f0;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 2;
+            padding: 40px;
+            border: 3px solid #2a2a2a;
+        }
+
+        /* Newspaper Masthead */
+        .masthead {
+            text-align: center;
+            border-bottom: 5px double #000;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .masthead h1 {
+            font-size: 64px;
+            font-weight: 900;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            margin-bottom: 5px;
+            color: #000;
+        }
+
+        .masthead .tagline {
+            font-size: 14px;
+            font-style: italic;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .masthead .date {
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* Section Header */
+        .section-header {
+            text-align: center;
+            border-top: 3px solid #000;
+            border-bottom: 3px solid #000;
+            padding: 15px 0;
+            margin: 30px 0 20px;
+            background: #000;
+            color: #fff;
+        }
+
+        .section-header h2 {
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+        }
+
+        /* Search Control Panel */
+        .control-panel {
+            background: #e8dcc8;
+            border: 3px solid #000;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .control-panel h3 {
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .search-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-field label {
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .form-field input,
+        .form-field select {
+            padding: 8px 10px;
+            border: 2px solid #000;
+            background: #fff;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 14px;
+        }
+
+        .update-button {
+            width: 100%;
+            padding: 12px;
+            background: #000;
+            color: #fff;
+            border: none;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .update-button:hover {
+            background: #333;
+        }
+
+        /* Classified Ads Layout */
+        .classifieds-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        /* Individual Ad Box */
+        .ad-box {
+            border: 4px solid #000;
+            padding: 15px;
+            background: #fff;
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+        }
+
+        .ad-box.featured {
+            grid-column: 1 / -1;
+            border-width: 6px;
+            background: #fffef8;
+        }
+
+        .ad-header {
+            border-bottom: 2px solid #000;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+        }
+
+        .ad-category {
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 3px;
+        }
+
+        .ad-title {
+            font-size: 18px;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 1.2;
+            margin-bottom: 5px;
+        }
+
+        .ad-subtitle {
+            font-size: 13px;
+            font-weight: bold;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+
+        .ad-body {
+            font-size: 12px;
+            line-height: 1.5;
+            text-align: justify;
+        }
+
+        .ad-body p {
+            margin-bottom: 8px;
+        }
+
+        .ad-body ul {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+
+        .ad-body li {
+            margin-bottom: 4px;
+            font-size: 11px;
+        }
+
+        /* Dynamic value styling */
+        .dynamic-value {
+            font-weight: bold;
+            text-transform: uppercase;
+            background: #fff9e6;
+            padding: 0 3px;
+            border-bottom: 2px solid #000;
+        }
+
+        .highlight-box {
+            background: #000;
+            color: #fff;
+            padding: 10px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Contact Info Box */
+        .contact-box {
+            border: 2px dashed #000;
+            padding: 8px;
+            margin-top: 8px;
+            background: #f5f5f5;
+            text-align: center;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        /* Copy buttons */
+        .copy-btn {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            font-size: 9px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            float: right;
+            letter-spacing: 1px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .copy-btn:hover {
+            background: #444;
+        }
+
+        .copy-btn.copied {
+            background: #2a7f2a;
+        }
+
+        /* Code section */
+        .code-section {
+            background: #e8dcc8;
+            border: 3px solid #000;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .code-section h3 {
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .code-block {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            line-height: 1.6;
+            overflow-x: auto;
+            border: 2px solid #000;
+        }
+
+        .code-block code {
+            display: block;
+            white-space: pre;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .classifieds-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .masthead h1 {
+                font-size: 36px;
+                letter-spacing: 4px;
+            }
+
+            .newspaper-container {
+                padding: 20px;
+            }
+
+            .ad-box.featured {
+                grid-column: 1;
+            }
+        }
+
+        /* Ornamental decorations */
+        .ornament {
+            text-align: center;
+            font-size: 20px;
+            margin: 20px 0;
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: #fff;
+            }
+
+            .control-panel,
+            .copy-btn,
+            .code-section {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="newspaper-container">
+        <!-- Masthead -->
+        <div class="masthead">
+            <h1>The Classifieds</h1>
+            <div class="tagline">Your Trusted Source for Local Services & Opportunities</div>
+            <div class="date" id="currentDate">Sunday, November 24, 2024</div>
+        </div>
+
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <h3>⚙ Customize Your Search</h3>
+            <form id="searchForm">
+                <div class="search-grid">
+                    <div class="form-field">
+                        <label for="service">Service Type</label>
+                        <input type="text" id="service" name="service" value="plumber" placeholder="e.g., plumber, electrician">
+                    </div>
+                    <div class="form-field">
+                        <label for="location">Location</label>
+                        <input type="text" id="location" name="location" value="Upstate New York" placeholder="e.g., Brooklyn, Manhattan">
+                    </div>
+                    <div class="form-field">
+                        <label for="urgency">Urgency Level</label>
+                        <select id="urgency" name="urgency">
+                            <option value="emergency">Emergency Service</option>
+                            <option value="same-day">Same Day Service</option>
+                            <option value="next-day" selected>Next Day Service</option>
+                            <option value="scheduled">Scheduled Appointment</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="rating">Minimum Rating</label>
+                        <select id="rating" name="rating">
+                            <option value="any">Any Rating</option>
+                            <option value="3">3+ Stars</option>
+                            <option value="4" selected>4+ Stars</option>
+                            <option value="5">5 Stars Only</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="update-button">Update Classifieds</button>
+            </form>
+        </div>
+
+        <!-- Section Header -->
+        <div class="section-header">
+            <h2>Classifieds</h2>
+        </div>
+
+        <!-- Classified Ads Grid -->
+        <div class="classifieds-grid">
+
+            <!-- Ad Box 1: Featured Large Ad -->
+            <div class="ad-box featured" id="ad1">
+                <button class="copy-btn" onclick="copyAd('ad1')">Copy</button>
+                <div class="ad-header">
+                    <div class="ad-category">★ Featured Service ★</div>
+                    <div class="ad-title">
+                        Professional <span class="dynamic-value" data-field="service-title">Plumber</span> Services
+                    </div>
+                    <div class="ad-subtitle">
+                        Serving <span class="dynamic-value" data-field="location">Upstate New York</span> - <span class="dynamic-value" data-field="rating">4+</span> Star Rated
+                    </div>
+                </div>
+                <div class="ad-body">
+                    <p>
+                        Need a reliable <span class="dynamic-value" data-field="service">plumber</span> in <span class="dynamic-value" data-field="location">Upstate New York</span>?
+                        Look no further! Our network of top-rated <span class="dynamic-value" data-field="service-plural">plumbers</span> is ready to serve you with
+                        <span class="dynamic-value" data-field="urgency-text">next day</span> availability.
+                    </p>
+                    <div class="highlight-box">
+                        <span class="dynamic-value" data-field="rating">4+</span> Star Professionals • Licensed & Insured • <span class="dynamic-value" data-field="urgency-text-title">Next Day</span> Service
+                    </div>
+                    <p>
+                        All <span class="dynamic-value" data-field="service-plural">plumbers</span> in our directory maintain exceptional ratings and are fully verified.
+                        Whether you need <span class="dynamic-value" data-field="urgency-text">next day</span> service or emergency assistance, we connect you with
+                        the best <span class="dynamic-value" data-field="service">plumbing</span> professionals in <span class="dynamic-value" data-field="location">Upstate New York</span>.
+                    </p>
+                    <div class="contact-box">
+                        CALL NOW FOR FREE QUOTE • AVAILABLE <span class="dynamic-value" data-field="urgency-text-title">NEXT DAY</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ad Box 2: Help Wanted Style -->
+            <div class="ad-box" id="ad2">
+                <button class="copy-btn" onclick="copyAd('ad2')">Copy</button>
+                <div class="ad-header">
+                    <div class="ad-category">Help Wanted</div>
+                    <div class="ad-title">
+                        <span class="dynamic-value" data-field="service-plural-title">Plumbers</span> Needed
+                    </div>
+                    <div class="ad-subtitle">
+                        <span class="dynamic-value" data-field="location">Upstate New York</span> Area
+                    </div>
+                </div>
+                <div class="ad-body">
+                    <p>
+                        Seeking experienced <span class="dynamic-value" data-field="service-plural">plumbers</span> in
+                        <span class="dynamic-value" data-field="location">Upstate New York</span>. Must maintain
+                        <span class="dynamic-value" data-field="rating">4+</span> star rating.
+                    </p>
+                    <ul>
+                        <li>Competitive pay</li>
+                        <li><span class="dynamic-value" data-field="urgency-text-title">Next day</span> work available</li>
+                        <li>Licensed professionals only</li>
+                        <li>Serving <span class="dynamic-value" data-field="location">Upstate New York</span></li>
+                    </ul>
+                    <div class="contact-box">Apply Today!</div>
+                </div>
+            </div>
+
+            <!-- Ad Box 3: Service Directory -->
+            <div class="ad-box" id="ad3">
+                <button class="copy-btn" onclick="copyAd('ad3')">Copy</button>
+                <div class="ad-header">
+                    <div class="ad-category">Service Directory</div>
+                    <div class="ad-title">
+                        Find a <span class="dynamic-value" data-field="service-title">Plumber</span>
+                    </div>
+                    <div class="ad-subtitle">
+                        <span class="dynamic-value" data-field="location">Upstate New York</span>
+                    </div>
+                </div>
+                <div class="ad-body">
+                    <p>
+                        Complete directory of <span class="dynamic-value" data-field="service-plural">plumbers</span> serving
+                        <span class="dynamic-value" data-field="location">Upstate New York</span>. All professionals rated
+                        <span class="dynamic-value" data-field="rating">4+</span> stars or higher.
+                    </p>
+                    <p>
+                        <strong>Services include:</strong> <span class="dynamic-value" data-field="urgency-text-title">Next day</span> appointments,
+                        emergency repairs, and scheduled maintenance for all <span class="dynamic-value" data-field="service">plumbing</span> needs.
+                    </p>
+                    <div class="contact-box">Free Estimates Available</div>
+                </div>
+            </div>
+
+            <!-- Ad Box 4: Testimonial Style -->
+            <div class="ad-box" id="ad4">
+                <button class="copy-btn" onclick="copyAd('ad4')">Copy</button>
+                <div class="ad-header">
+                    <div class="ad-category">Customer Reviews</div>
+                    <div class="ad-title">
+                        Why Choose Our <span class="dynamic-value" data-field="service-plural-title">Plumbers</span>?
+                    </div>
+                </div>
+                <div class="ad-body">
+                    <p>
+                        <strong>"Best <span class="dynamic-value" data-field="service">plumber</span> in <span class="dynamic-value" data-field="location">Upstate New York</span>!"</strong>
+                        - <span class="dynamic-value" data-field="rating">4+</span> star rating from verified customers.
+                    </p>
+                    <ul>
+                        <li>Fast <span class="dynamic-value" data-field="urgency-text">next day</span> service</li>
+                        <li>Professional <span class="dynamic-value" data-field="service-plural">plumbers</span></li>
+                        <li>Serving all of <span class="dynamic-value" data-field="location">Upstate New York</span></li>
+                        <li>Trusted by thousands of homeowners</li>
+                    </ul>
+                    <div class="contact-box">
+                        Book Your <span class="dynamic-value" data-field="service-title">Plumber</span> Now!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ad Box 5: Quick Info -->
+            <div class="ad-box" id="ad5">
+                <button class="copy-btn" onclick="copyAd('ad5')">Copy</button>
+                <div class="ad-header">
+                    <div class="ad-category">Local Services</div>
+                    <div class="ad-title">
+                        <span class="dynamic-value" data-field="service-title">Plumbing</span> Experts
+                    </div>
+                </div>
+                <div class="ad-body">
+                    <p>
+                        Top-rated <span class="dynamic-value" data-field="service-plural">plumbers</span> in
+                        <span class="dynamic-value" data-field="location">Upstate New York</span>.
+                        Minimum <span class="dynamic-value" data-field="rating">4+</span> star rating guaranteed.
+                    </p>
+                    <div class="highlight-box">
+                        <span class="dynamic-value" data-field="urgency-text-title">Next Day</span> Service Available
+                    </div>
+                    <p><strong>All <span class="dynamic-value" data-field="service-plural">plumbers</span> are:</strong> Licensed • Insured • Background Checked</p>
+                    <div class="contact-box">Call for Free Quote</div>
+                </div>
+            </div>
+
+            <!-- Ad Box 6: Special Offer -->
+            <div class="ad-box" id="ad6">
+                <button class="copy-btn" onclick="copyAd('ad6')">Copy</button>
+                <div class="ad-header">
+                    <div class="ad-category">★ Special Offer ★</div>
+                    <div class="ad-title">
+                        <span class="dynamic-value" data-field="service-title">Plumber</span> Special
+                    </div>
+                </div>
+                <div class="ad-body">
+                    <div class="highlight-box">
+                        First-Time Customer Discount!
+                    </div>
+                    <p>
+                        Get matched with <span class="dynamic-value" data-field="rating">4+</span> star rated
+                        <span class="dynamic-value" data-field="service-plural">plumbers</span> in
+                        <span class="dynamic-value" data-field="location">Upstate New York</span>.
+                    </p>
+                    <p>
+                        <strong><span class="dynamic-value" data-field="urgency-text-title">Next day</span> service available.</strong>
+                        All <span class="dynamic-value" data-field="service">plumbing</span> work guaranteed.
+                    </p>
+                    <div class="contact-box">
+                        Limited Time Offer - Book Today!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ad Box 7: Full-Width Bottom Ad -->
+            <div class="ad-box featured" id="ad7">
+                <button class="copy-btn" onclick="copyAd('ad7')">Copy</button>
+                <div class="ad-header">
+                    <div class="ad-category">Complete Service Guide</div>
+                    <div class="ad-title">
+                        <span class="dynamic-value" data-field="service-title">Plumber</span> in <span class="dynamic-value" data-field="location">Upstate New York</span> - Your Complete Directory
+                    </div>
+                </div>
+                <div class="ad-body">
+                    <p>
+                        Finding a qualified <span class="dynamic-value" data-field="service">plumber</span> in
+                        <span class="dynamic-value" data-field="location">Upstate New York</span> has never been easier.
+                        Our comprehensive directory connects you with the area's most trusted <span class="dynamic-value" data-field="service-plural">plumbers</span>,
+                        all maintaining a minimum <span class="dynamic-value" data-field="rating">4+</span> star rating from verified customers.
+                    </p>
+                    <p>
+                        <strong>What We Offer:</strong> Whether you need <span class="dynamic-value" data-field="urgency-text">next day</span> service
+                        or are planning ahead, our network of <span class="dynamic-value" data-field="service-plural">plumbers</span> in
+                        <span class="dynamic-value" data-field="location">Upstate New York</span> offers flexible scheduling to meet your needs.
+                        Every professional is fully licensed, insured, and committed to delivering exceptional service.
+                    </p>
+                    <div class="highlight-box">
+                        Free Quotes • <span class="dynamic-value" data-field="rating">4+</span> Star Rated • <span class="dynamic-value" data-field="urgency-text-title">Next Day</span> Availability • Licensed & Insured
+                    </div>
+                    <p>
+                        <strong>Why trust our <span class="dynamic-value" data-field="location">Upstate New York</span>
+                        <span class="dynamic-value" data-field="service-plural">plumbers</span>?</strong>
+                        Experience, reliability, and a proven track record of customer satisfaction. Browse profiles, read reviews,
+                        and connect with the perfect <span class="dynamic-value" data-field="service">plumber</span> for your project today.
+                        All professionals in our directory are background-checked, verified, and ready to provide quality
+                        <span class="dynamic-value" data-field="service">plumbing</span> services throughout
+                        <span class="dynamic-value" data-field="location">Upstate New York</span>.
+                    </p>
+                    <div class="contact-box">
+                        ☎ CALL NOW FOR IMMEDIATE ASSISTANCE • SERVING ALL OF <span class="dynamic-value" data-field="location">UPSTATE NEW YORK</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="ornament">❦ ❦ ❦</div>
+
+        <!-- Code Template Section -->
+        <div class="code-section">
+            <h3>📋 Copy-Paste Code Template</h3>
+            <p style="margin-bottom: 15px; font-size: 12px;">Use this HTML code in your projects. Simply add the newspaper CSS styles and JavaScript functionality.</p>
+            <div class="code-block">
+<code id="codeTemplate">&lt;!-- Newspaper Classified Ad Template --&gt;
+&lt;div class="ad-box"&gt;
+    &lt;div class="ad-header"&gt;
+        &lt;div class="ad-category"&gt;Featured Service&lt;/div&gt;
+        &lt;div class="ad-title"&gt;
+            Professional &lt;span class="dynamic-value" data-field="service-title"&gt;Plumber&lt;/span&gt; Services
+        &lt;/div&gt;
+        &lt;div class="ad-subtitle"&gt;
+            Serving &lt;span class="dynamic-value" data-field="location"&gt;Upstate New York&lt;/span&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="ad-body"&gt;
+        &lt;p&gt;
+            Need a reliable &lt;span class="dynamic-value" data-field="service"&gt;plumber&lt;/span&gt;
+            in &lt;span class="dynamic-value" data-field="location"&gt;Upstate New York&lt;/span&gt;?
+            Our &lt;span class="dynamic-value" data-field="rating"&gt;4+&lt;/span&gt; star rated professionals
+            offer &lt;span class="dynamic-value" data-field="urgency-text"&gt;next day&lt;/span&gt; service.
+        &lt;/p&gt;
+        &lt;div class="contact-box"&gt;
+            Call Now for Free Quote!
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+// Dynamic text update function
+function updateClassifieds(params) {
+    const service = params.service.toLowerCase();
+    const servicePlural = pluralize(service);
+    const serviceTitle = capitalize(service);
+    const servicePluralTitle = capitalize(servicePlural);
+
+    const urgencyMap = {
+        'emergency': 'emergency',
+        'same-day': 'same day',
+        'next-day': 'next day',
+        'scheduled': 'scheduled'
+    };
+    const urgencyText = urgencyMap[params.urgency] || params.urgency;
+    const urgencyTextTitle = capitalize(urgencyText);
+    const ratingText = params.rating === 'any' ? 'all' : params.rating + '+';
+
+    const fields = {
+        'service': service,
+        'service-plural': servicePlural,
+        'service-title': serviceTitle,
+        'service-plural-title': servicePluralTitle,
+        'location': params.location,
+        'urgency-text': urgencyText,
+        'urgency-text-title': urgencyTextTitle,
+        'rating': ratingText
+    };
+
+    Object.keys(fields).forEach(field =&gt; {
+        document.querySelectorAll(`[data-field="${field}"]`).forEach(el =&gt; {
+            el.textContent = fields[field];
+        });
+    });
+}
+
+function pluralize(word) {
+    const exceptions = {
+        'plumber': 'plumbers',
+        'electrician': 'electricians',
+        'contractor': 'contractors',
+        'landscaper': 'landscapers'
+    };
+    return exceptions[word] || word + 's';
+}
+
+function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+&lt;/script&gt;</code>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Current search parameters
+        let currentParams = {
+            service: 'plumber',
+            location: 'Upstate New York',
+            urgency: 'next-day',
+            rating: '4'
+        };
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current date
+            updateDate();
+
+            // Load from URL parameters if available
+            loadFromURL();
+
+            // Update all classified ads
+            updateClassifieds(currentParams);
+
+            // Setup form submission
+            document.getElementById('searchForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                currentParams = {
+                    service: document.getElementById('service').value,
+                    location: document.getElementById('location').value,
+                    urgency: document.getElementById('urgency').value,
+                    rating: document.getElementById('rating').value
+                };
+
+                updateClassifieds(currentParams);
+                updateURL(currentParams);
+            });
+        });
+
+        // Update date display
+        function updateDate() {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const today = new Date();
+            document.getElementById('currentDate').textContent = today.toLocaleDateString('en-US', options);
+        }
+
+        // Main update function
+        function updateClassifieds(params) {
+            // Service variations
+            const service = params.service.toLowerCase().trim();
+            const servicePlural = pluralize(service);
+            const serviceTitle = capitalize(service);
+            const servicePluralTitle = capitalize(servicePlural);
+
+            // Urgency text mapping
+            const urgencyMap = {
+                'emergency': 'emergency',
+                'same-day': 'same day',
+                'next-day': 'next day',
+                'scheduled': 'scheduled'
+            };
+            const urgencyText = urgencyMap[params.urgency] || params.urgency;
+            const urgencyTextTitle = capitalize(urgencyText);
+
+            // Rating text
+            const ratingText = params.rating === 'any' ? 'all' : params.rating + '+';
+
+            // Map all field variations
+            const fields = {
+                'service': service,
+                'service-plural': servicePlural,
+                'service-title': serviceTitle,
+                'service-plural-title': servicePluralTitle,
+                'location': params.location,
+                'urgency-text': urgencyText,
+                'urgency-text-title': urgencyTextTitle,
+                'rating': ratingText
+            };
+
+            // Update all dynamic values in the DOM
+            Object.keys(fields).forEach(field => {
+                document.querySelectorAll(`[data-field="${field}"]`).forEach(el => {
+                    el.textContent = fields[field];
+                });
+            });
+        }
+
+        // Helper: Pluralize words
+        function pluralize(word) {
+            const exceptions = {
+                'plumber': 'plumbers',
+                'plumbing': 'plumbing services',
+                'electrician': 'electricians',
+                'contractor': 'contractors',
+                'landscaper': 'landscapers',
+                'painter': 'painters',
+                'roofer': 'roofers',
+                'hvac': 'HVAC technicians',
+                'carpenter': 'carpenters',
+                'handyman': 'handymen'
+            };
+
+            if (exceptions[word.toLowerCase()]) {
+                return exceptions[word.toLowerCase()];
+            }
+
+            if (word.endsWith('y')) {
+                return word.slice(0, -1) + 'ies';
+            } else if (word.endsWith('s') || word.endsWith('x') || word.endsWith('z')) {
+                return word + 'es';
+            } else {
+                return word + 's';
+            }
+        }
+
+        // Helper: Capitalize first letter
+        function capitalize(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        // URL parameter handling
+        function loadFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+
+            if (urlParams.has('service')) {
+                currentParams.service = urlParams.get('service');
+                document.getElementById('service').value = currentParams.service;
+            }
+            if (urlParams.has('location')) {
+                currentParams.location = urlParams.get('location');
+                document.getElementById('location').value = currentParams.location;
+            }
+            if (urlParams.has('urgency')) {
+                currentParams.urgency = urlParams.get('urgency');
+                document.getElementById('urgency').value = currentParams.urgency;
+            }
+            if (urlParams.has('rating')) {
+                currentParams.rating = urlParams.get('rating');
+                document.getElementById('rating').value = currentParams.rating;
+            }
+        }
+
+        function updateURL(params) {
+            const url = new URL(window.location);
+            url.searchParams.set('service', params.service);
+            url.searchParams.set('location', params.location);
+            url.searchParams.set('urgency', params.urgency);
+            url.searchParams.set('rating', params.rating);
+            window.history.pushState({}, '', url);
+        }
+
+        // Copy ad HTML to clipboard
+        function copyAd(adId) {
+            const ad = document.getElementById(adId);
+            const adContent = ad.querySelector('.ad-body').innerHTML;
+
+            navigator.clipboard.writeText(adContent).then(() => {
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = '✓ Copied!';
+                button.classList.add('copied');
+
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                alert('Failed to copy. Please try again.');
+            });
+        }
+    </script>
+</body>
+</html>
